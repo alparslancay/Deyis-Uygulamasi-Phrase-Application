@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B528F574-8555-4C00-9E66-99432C3226AB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Project.BusinessLayer</RootNamespace>
+    <AssemblyName>Project.BusinessLayer</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstract Classes\DeyisIslemleriADT.cs" />
+    <Compile Include="Abstract Classes\HeapADT.cs" />
+    <Compile Include="Abstract Classes\HeapDugumu.cs" />
+    <Compile Include="Classes\AtasozuIslemleri.cs" />
+    <Compile Include="Classes\DeyimIslemleri.cs" />
+    <Compile Include="Classes\DolaylamaIslemleri.cs" />
+    <Compile Include="Classes\FactoryKullaniciIslem.cs" />
+    <Compile Include="Classes\FactoryYetkiliIslem.cs" />
+    <Compile Include="Classes\HeapClasses\AtasozuHeap.cs" />
+    <Compile Include="Classes\HeapClasses\DeyimHeap.cs" />
+    <Compile Include="Classes\HeapClasses\DolaylamaHeap.cs" />
+    <Compile Include="Classes\HeapClasses\IkilemeHeap.cs" />
+    <Compile Include="Classes\HeapClasses\OzdeyisHeap.cs" />
+    <Compile Include="Classes\HeapClasses\YansimaHeap.cs" />
+    <Compile Include="Classes\HeapNodeClasses\AtasozuHeapDugumu.cs" />
+    <Compile Include="Classes\HeapNodeClasses\DeyimHeapDugumu.cs" />
+    <Compile Include="Classes\HeapNodeClasses\DolaylamaHeapDugumu.cs" />
+    <Compile Include="Classes\HeapNodeClasses\IkilemeHeapDugumu.cs" />
+    <Compile Include="Classes\HeapNodeClasses\OzdeyisHeapDugumu.cs" />
+    <Compile Include="Classes\HeapNodeClasses\YansimaHeapDugumu.cs" />
+    <Compile Include="Classes\IkilemeIslemleri.cs" />
+    <Compile Include="Classes\OzdeyisIslemleri.cs" />
+    <Compile Include="Classes\YansimaIslemleri.cs" />
+    <Compile Include="Interfaces\IKullaniciIslemleri.cs" />
+    <Compile Include="Interfaces\IYetkiliIslemleri.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Project.DataAccessLayer\Project.DataAccessLayer.csproj">
+      <Project>{8E1A25B4-9353-4CA4-B5B7-D10F50021D2A}</Project>
+      <Name>Project.DataAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Project.EntityLayer\Project.EntityLayer.csproj">
+      <Project>{C2E224D2-C3B1-40D5-BE6A-8B25DACE291E}</Project>
+      <Name>Project.EntityLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
