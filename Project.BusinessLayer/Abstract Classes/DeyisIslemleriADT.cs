@@ -10,8 +10,8 @@ namespace Project.BusinessLayer.Abstract_Classes
 {
     public abstract class DeyisIslemleriADT<TEntity> : IYetkiliIslemleri<TEntity> where TEntity : class
     {
-        IUnitOfWork unitOfWork;
-        HeapADT<TEntity> heapADT;
+        protected IUnitOfWork unitOfWork;
+        protected HeapADT<TEntity> heapADT;
 
         public abstract TEntity CumleAra(string deyisCumle);
 
@@ -21,7 +21,7 @@ namespace Project.BusinessLayer.Abstract_Classes
         public abstract bool Guncelle(TEntity entity);
 
 
-        public abstract bool IDAra(int deyisID);
+        public abstract TEntity IDAra(int deyisID);
 
 
         public abstract bool Sil(TEntity entity);

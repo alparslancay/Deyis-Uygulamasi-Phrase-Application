@@ -10,7 +10,7 @@ namespace Project.BusinessLayer.Interfaces
     {
         bool Guncelle(TEntity entity);
         bool Sil(TEntity entity);
-        bool IDAra(int deyisID);
+        TEntity IDAra(int deyisID);
         bool Ekle(TEntity entity);
     }
 }

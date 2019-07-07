@@ -1,4 +1,6 @@
 ﻿using Project.BusinessLayer.Abstract_Classes;
+using Project.BusinessLayer.Classes.HeapClasses;
+using Project.DataAccessLayer.Classes;
 using Project.EntityLayer;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,12 @@ namespace Project.BusinessLayer.Classes
 {
     public class AtasozuIslemleri : DeyisIslemleriADT<Atasozu>
     {
+        public AtasozuIslemleri()
+        {
+            unitOfWork = new UnitOfWork(new ProjectDbContext("DeyisDB"));
+            heapADT = new AtasozuHeap();
+        }
+
         public override Atasozu CumleAra(string deyisCumle)
         {
             throw new NotImplementedException();
@@ -25,7 +33,7 @@ namespace Project.BusinessLayer.Classes
             throw new NotImplementedException();
         }
 
-        public override bool IDAra(int deyisID)
+        public override Atasozu IDAra(int deyisID)
         {
             throw new NotImplementedException();
         }

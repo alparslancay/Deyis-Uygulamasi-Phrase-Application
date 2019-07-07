@@ -8,6 +8,6 @@ namespace Project.BusinessLayer.Abstract_Classes
 {
     public abstract class HeapDugumu<TEntity> where TEntity : class
     {
-        TEntity entity;
+        protected TEntity entity;
     }
 }
