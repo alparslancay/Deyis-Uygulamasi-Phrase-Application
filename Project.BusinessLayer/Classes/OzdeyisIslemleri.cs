@@ -4,7 +4,9 @@ using Project.DataAccessLayer.Classes;
 using Project.EntityLayer;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,32 +22,74 @@ namespace Project.BusinessLayer.Classes
 
         public override Ozdeyis CumleAra(string deyisCumle)
         {
-            throw new NotImplementedException();
+            deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
+            deyisCumle = deyisCumle.ToUpper();
+            Expression<Func<Ozdeyis, bool>> predicate = arananOzdeyis => arananOzdeyis.DeyisCumle == deyisCumle;
+            IEnumerable<Ozdeyis> istenenOzdeyis = unitOfWork.Ozdeyisler.Find(predicate);
+            return istenenOzdeyis.First();
         }
 
         public override bool Ekle(Ozdeyis entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                unitOfWork.Ozdeyisler.Add(entity);
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override bool Guncelle(Ozdeyis entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Ozdeyis eskiOzdeyis = new Ozdeyis();
+                eskiOzdeyis = unitOfWork.Ozdeyisler.Get(entity.Id);
+                eskiOzdeyis = entity;
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override Ozdeyis IDAra(int deyisID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Expression<Func<Ozdeyis, bool>> predicate = arananOzdeyis => arananOzdeyis.Id == deyisID;
+                IEnumerable<Ozdeyis> istenenOzdeyis = unitOfWork.Ozdeyisler.Find(predicate);
+                return istenenOzdeyis.First();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public override bool Sil(Ozdeyis entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                unitOfWork.Ozdeyisler.Remove(entity);
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override List<Ozdeyis> TumElemanList()
         {
-            throw new NotImplementedException();
+            return unitOfWork.Ozdeyisler.GetAll().ToList();
         }
     }
 }
