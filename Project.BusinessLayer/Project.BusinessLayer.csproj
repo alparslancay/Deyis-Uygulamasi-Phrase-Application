@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="Abstract Classes\DeyisIslemleriADT.cs" />
     <Compile Include="Abstract Classes\HeapADT.cs" />
-    <Compile Include="Abstract Classes\HeapDugumu.cs" />
     <Compile Include="Classes\AtasozuIslemleri.cs" />
     <Compile Include="Classes\DeyimIslemleri.cs" />
     <Compile Include="Classes\DolaylamaIslemleri.cs" />
@@ -56,12 +55,6 @@
     <Compile Include="Classes\HeapClasses\IkilemeHeap.cs" />
     <Compile Include="Classes\HeapClasses\OzdeyisHeap.cs" />
     <Compile Include="Classes\HeapClasses\YansimaHeap.cs" />
-    <Compile Include="Classes\HeapNodeClasses\AtasozuHeapDugumu.cs" />
-    <Compile Include="Classes\HeapNodeClasses\DeyimHeapDugumu.cs" />
-    <Compile Include="Classes\HeapNodeClasses\DolaylamaHeapDugumu.cs" />
-    <Compile Include="Classes\HeapNodeClasses\IkilemeHeapDugumu.cs" />
-    <Compile Include="Classes\HeapNodeClasses\OzdeyisHeapDugumu.cs" />
-    <Compile Include="Classes\HeapNodeClasses\YansimaHeapDugumu.cs" />
     <Compile Include="Classes\IkilemeIslemleri.cs" />
     <Compile Include="Classes\OzdeyisIslemleri.cs" />
     <Compile Include="Classes\YansimaIslemleri.cs" />
