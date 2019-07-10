@@ -10,7 +10,6 @@ namespace Project.BusinessLayer.Abstract_Classes
 {
     public abstract class HeapADT<TEntity> where TEntity : class
     {
-        protected HeapDugumu<TEntity>[] heapArray;
         protected List<HeapDugumu<TEntity>> agacDugumleri;
         private int m_maxSize;
         public abstract void Ekle(TEntity entity);
