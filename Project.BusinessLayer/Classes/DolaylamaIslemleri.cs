@@ -11,20 +11,18 @@ using System.Threading.Tasks;
 namespace Project.BusinessLayer.Classes
 {
     public class DolaylamaIslemleri : DeyisIslemleriADT<Dolaylama>
-    {
-         public DolaylamaIslemleri()
+    {public DolaylamaIslemleri()
         {
             unitOfWork = new UnitOfWork(new ProjectDbContext("DeyisDB"));
-            heapADT = new DolaylamaHeap();
+            heapADT = new DolaylamaHeap(unitOfWork.Dolaylamalar.GetAll().ToList());
         }
 
         public override Dolaylama CumleAra(string deyisCumle)
         {
             deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
             deyisCumle = deyisCumle.ToUpper();
-            Expression<Func<Dolaylama, bool>> predicate = arananDolaylama => arananDolaylama.DeyisCumle == deyisCumle;
-            IEnumerable<Dolaylama> istenenDolaylama = unitOfWork.Dolaylamalar.Find(predicate);
-            return istenenDolaylama.First();
+            Predicate<Dolaylama> predicate = arananDolaylama => arananDolaylama.DeyisCumle == deyisCumle;
+            return heapADT.Ara(predicate);
         }
 
         public override bool Ekle(Dolaylama entity)
@@ -32,6 +30,7 @@ namespace Project.BusinessLayer.Classes
             try
             {
                 unitOfWork.Dolaylamalar.Add(entity);
+                heapADT.Ekle(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -48,6 +47,7 @@ namespace Project.BusinessLayer.Classes
                 Dolaylama eskiDolaylama = new Dolaylama();
                 eskiDolaylama = unitOfWork.Dolaylamalar.Get(entity.Id);
                 eskiDolaylama = entity;
+                heapADT.Guncelle(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -61,9 +61,8 @@ namespace Project.BusinessLayer.Classes
         {
             try
             {
-                Expression<Func<Dolaylama, bool>> predicate = arananDolaylama => arananDolaylama.Id == deyisID;
-                IEnumerable<Dolaylama> istenenDolaylama = unitOfWork.Dolaylamalar.Find(predicate);
-                return istenenDolaylama.First();
+                Predicate<Dolaylama> predicate = arananDolaylama => arananDolaylama.Id == deyisID;
+                return heapADT.Ara(predicate);
             }
             catch (Exception)
             {
@@ -76,6 +75,7 @@ namespace Project.BusinessLayer.Classes
             try
             {
                 unitOfWork.Dolaylamalar.Remove(entity);
+                heapADT.Sil(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -87,7 +87,7 @@ namespace Project.BusinessLayer.Classes
 
         public override List<Dolaylama> TumElemanList()
         {
-            return unitOfWork.Dolaylamalar.GetAll().ToList();
+            return heapADT.TumElemanList();
         }
     }
 }
