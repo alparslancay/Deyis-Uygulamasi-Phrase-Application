@@ -11,20 +11,18 @@ using System.Threading.Tasks;
 namespace Project.BusinessLayer.Classes
 {
     public class DeyimIslemleri : DeyisIslemleriADT<Deyim>
-    {
-        public DeyimIslemleri()
+    {public DeyimIslemleri()
         {
             unitOfWork = new UnitOfWork(new ProjectDbContext("DeyisDB"));
-            heapADT = new DeyimHeap();
+            heapADT = new DeyimHeap(unitOfWork.Deyimler.GetAll().ToList());
         }
 
         public override Deyim CumleAra(string deyisCumle)
         {
             deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
             deyisCumle = deyisCumle.ToUpper();
-            Expression<Func<Deyim, bool>> predicate = arananDeyim => arananDeyim.DeyisCumle == deyisCumle;
-            IEnumerable<Deyim> istenenDeyim = unitOfWork.Deyimler.Find(predicate);
-            return istenenDeyim.First();
+            Predicate<Deyim> predicate = arananDeyim => arananDeyim.DeyisCumle == deyisCumle;
+            return heapADT.Ara(predicate);
         }
 
         public override bool Ekle(Deyim entity)
@@ -32,6 +30,7 @@ namespace Project.BusinessLayer.Classes
             try
             {
                 unitOfWork.Deyimler.Add(entity);
+                heapADT.Ekle(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -48,6 +47,7 @@ namespace Project.BusinessLayer.Classes
                 Deyim eskiDeyim = new Deyim();
                 eskiDeyim = unitOfWork.Deyimler.Get(entity.Id);
                 eskiDeyim = entity;
+                heapADT.Guncelle(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -61,9 +61,8 @@ namespace Project.BusinessLayer.Classes
         {
             try
             {
-                Expression<Func<Deyim, bool>> predicate = arananDeyim => arananDeyim.Id == deyisID;
-                IEnumerable<Deyim> istenenDeyim = unitOfWork.Deyimler.Find(predicate);
-                return istenenDeyim.First();
+                Predicate<Deyim> predicate = arananDeyim => arananDeyim.Id == deyisID;
+                return heapADT.Ara(predicate);
             }
             catch (Exception)
             {
@@ -76,6 +75,7 @@ namespace Project.BusinessLayer.Classes
             try
             {
                 unitOfWork.Deyimler.Remove(entity);
+                heapADT.Sil(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -87,7 +87,7 @@ namespace Project.BusinessLayer.Classes
 
         public override List<Deyim> TumElemanList()
         {
-            return unitOfWork.Deyimler.GetAll().ToList();
+            return heapADT.TumElemanList();
         }
     }
 }
