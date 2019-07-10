@@ -15,16 +15,15 @@ namespace Project.BusinessLayer.Classes
         public IkilemeIslemleri()
         {
             unitOfWork = new UnitOfWork(new ProjectDbContext("DeyisDB"));
-            heapADT = new IkilemeHeap();
+            heapADT = new IkilemeHeap(unitOfWork.Ikilemeler.GetAll().ToList());
         }
 
         public override Ikileme CumleAra(string deyisCumle)
         {
             deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
             deyisCumle = deyisCumle.ToUpper();
-            Expression<Func<Ikileme, bool>> predicate = arananIkileme => arananIkileme.DeyisCumle == deyisCumle;
-            IEnumerable<Ikileme> istenenIkileme = unitOfWork.Ikilemeler.Find(predicate);
-            return istenenIkileme.First();
+            Predicate<Ikileme> predicate = arananIkileme => arananIkileme.DeyisCumle == deyisCumle;
+            return heapADT.Ara(predicate);
         }
 
         public override bool Ekle(Ikileme entity)
@@ -32,6 +31,7 @@ namespace Project.BusinessLayer.Classes
             try
             {
                 unitOfWork.Ikilemeler.Add(entity);
+                heapADT.Ekle(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -43,11 +43,12 @@ namespace Project.BusinessLayer.Classes
 
         public override bool Guncelle(Ikileme entity)
         {
-             try
+            try
             {
                 Ikileme eskiIkileme = new Ikileme();
                 eskiIkileme = unitOfWork.Ikilemeler.Get(entity.Id);
                 eskiIkileme = entity;
+                heapADT.Guncelle(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -59,11 +60,10 @@ namespace Project.BusinessLayer.Classes
 
         public override Ikileme IDAra(int deyisID)
         {
-           try
+            try
             {
-                Expression<Func<Ikileme, bool>> predicate = arananIkileme => arananIkileme.Id == deyisID;
-                IEnumerable<Ikileme> istenenIkileme = unitOfWork.Ikilemeler.Find(predicate);
-                return istenenIkileme.First();
+                Predicate<Ikileme> predicate = arananIkileme => arananIkileme.Id == deyisID;
+                return heapADT.Ara(predicate);
             }
             catch (Exception)
             {
@@ -73,9 +73,10 @@ namespace Project.BusinessLayer.Classes
 
         public override bool Sil(Ikileme entity)
         {
-              try
+            try
             {
                 unitOfWork.Ikilemeler.Remove(entity);
+                heapADT.Sil(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -87,7 +88,7 @@ namespace Project.BusinessLayer.Classes
 
         public override List<Ikileme> TumElemanList()
         {
-             return unitOfWork.Ikilemeler.GetAll().ToList();
+            return heapADT.TumElemanList();
         }
     }
 }
