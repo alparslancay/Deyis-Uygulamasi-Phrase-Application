@@ -12,7 +12,7 @@ namespace Project.BusinessLayer.Classes
 {
     public class DolaylamaIslemleri : DeyisIslemleriADT<Dolaylama>
     {
-        public DolaylamaIslemleri()
+         public DolaylamaIslemleri()
         {
             unitOfWork = new UnitOfWork(new ProjectDbContext("DeyisDB"));
             heapADT = new DolaylamaHeap();
@@ -20,32 +20,74 @@ namespace Project.BusinessLayer.Classes
 
         public override Dolaylama CumleAra(string deyisCumle)
         {
-            throw new NotImplementedException();
+            deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
+            deyisCumle = deyisCumle.ToUpper();
+            Expression<Func<Dolaylama, bool>> predicate = arananDolaylama => arananDolaylama.DeyisCumle == deyisCumle;
+            IEnumerable<Dolaylama> istenenDolaylama = unitOfWork.Dolaylamalar.Find(predicate);
+            return istenenDolaylama.First();
         }
 
         public override bool Ekle(Dolaylama entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                unitOfWork.Dolaylamalar.Add(entity);
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override bool Guncelle(Dolaylama entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Dolaylama eskiDolaylama = new Dolaylama();
+                eskiDolaylama = unitOfWork.Dolaylamalar.Get(entity.Id);
+                eskiDolaylama = entity;
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override Dolaylama IDAra(int deyisID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Expression<Func<Dolaylama, bool>> predicate = arananDolaylama => arananDolaylama.Id == deyisID;
+                IEnumerable<Dolaylama> istenenDolaylama = unitOfWork.Dolaylamalar.Find(predicate);
+                return istenenDolaylama.First();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public override bool Sil(Dolaylama entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                unitOfWork.Dolaylamalar.Remove(entity);
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override List<Dolaylama> TumElemanList()
         {
-            throw new NotImplementedException();
+            return unitOfWork.Dolaylamalar.GetAll().ToList();
         }
     }
 }
