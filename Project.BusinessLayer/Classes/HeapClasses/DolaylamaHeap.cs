@@ -11,7 +11,7 @@ namespace Project.BusinessLayer.Classes.HeapClasses
 {
     public class DolaylamaHeap : HeapADT<Dolaylama>
     {
-        public override Dolaylama Ara(Expression<Func<Dolaylama, bool>> predicate)
+        public override Dolaylama Ara(Predicate<Dolaylama> predicate)
         {
             throw new NotImplementedException();
         }

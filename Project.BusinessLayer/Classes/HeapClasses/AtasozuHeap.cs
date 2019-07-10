@@ -11,7 +11,7 @@ namespace Project.BusinessLayer.Classes.HeapClasses
 {
     public class AtasozuHeap : HeapADT<Atasozu>
     {
-        public override Atasozu Ara(Expression<Func<Atasozu, bool>> predicate)
+        public override Atasozu Ara(Predicate<Atasozu> predicate)
         {
             throw new NotImplementedException();
         }

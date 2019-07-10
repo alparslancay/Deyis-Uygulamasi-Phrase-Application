@@ -11,7 +11,7 @@ namespace Project.BusinessLayer.Classes.HeapClasses
 {
     public class IkilemeHeap : HeapADT<Ikileme>
     {
-        public override Ikileme Ara(Expression<Func<Ikileme, bool>> predicate)
+        public override Ikileme Ara(Predicate<Ikileme> predicate)
         {
             throw new NotImplementedException();
         }

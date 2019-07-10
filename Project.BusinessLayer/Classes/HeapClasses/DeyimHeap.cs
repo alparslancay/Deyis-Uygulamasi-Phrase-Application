@@ -11,7 +11,7 @@ namespace Project.BusinessLayer.Classes.HeapClasses
 {
     public class DeyimHeap : HeapADT<Deyim>
     {
-        public override Deyim Ara(Expression<Func<Deyim, bool>> predicate)
+        public override Deyim Ara(Predicate<Deyim> predicate)
         {
             throw new NotImplementedException();
         }

@@ -11,7 +11,7 @@ namespace Project.BusinessLayer.Classes.HeapClasses
 {
     public class OzdeyisHeap : HeapADT<Ozdeyis>
     {
-        public override Ozdeyis Ara(Expression<Func<Ozdeyis, bool>> predicate)
+        public override Ozdeyis Ara(Predicate<Ozdeyis> predicate)
         {
             throw new NotImplementedException();
         }

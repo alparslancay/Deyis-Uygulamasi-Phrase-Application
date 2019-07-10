@@ -11,7 +11,7 @@ namespace Project.BusinessLayer.Classes.HeapClasses
 {
     public class YansimaHeap : HeapADT<Yansima>
     {
-        public override Yansima Ara(Expression<Func<Yansima, bool>> predicate)
+        public override Yansima Ara(Predicate<Yansima> predicate)
         {
             throw new NotImplementedException();
         }
