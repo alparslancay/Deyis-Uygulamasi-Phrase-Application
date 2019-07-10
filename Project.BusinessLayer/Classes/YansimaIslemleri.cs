@@ -11,20 +11,18 @@ using System.Threading.Tasks;
 namespace Project.BusinessLayer.Classes
 {
     public class YansimaIslemleri : DeyisIslemleriADT<Yansima>
-    {
-        public YansimaIslemleri()
+    {public YansimaIslemleri()
         {
             unitOfWork = new UnitOfWork(new ProjectDbContext("DeyisDB"));
-            heapADT = new YansimaHeap();
+            heapADT = new YansimaHeap(unitOfWork.Yansimalar.GetAll().ToList());
         }
 
         public override Yansima CumleAra(string deyisCumle)
         {
             deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
             deyisCumle = deyisCumle.ToUpper();
-            Expression<Func<Ozdeyis, bool>> predicate = arananYansima => arananYansima.DeyisCumle == deyisCumle;
-            IEnumerable<Yansima> istenenYansima = unitOfWork.Yansimalar.Find(predicate);
-            return istenenYansima.First();
+            Predicate<Yansima> predicate = arananYansima => arananYansima.DeyisCumle == deyisCumle;
+            return heapADT.Ara(predicate);
         }
 
         public override bool Ekle(Yansima entity)
@@ -32,6 +30,7 @@ namespace Project.BusinessLayer.Classes
             try
             {
                 unitOfWork.Yansimalar.Add(entity);
+                heapADT.Ekle(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -48,6 +47,7 @@ namespace Project.BusinessLayer.Classes
                 Yansima eskiYansima = new Yansima();
                 eskiYansima = unitOfWork.Yansimalar.Get(entity.Id);
                 eskiYansima = entity;
+                heapADT.Guncelle(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -61,9 +61,8 @@ namespace Project.BusinessLayer.Classes
         {
             try
             {
-                Expression<Func<Yansima, bool>> predicate = arananYansima => arananYansima.Id == deyisID;
-                IEnumerable<Yansima> istenenYansima = unitOfWork.Yansimalar.Find(predicate);
-                return istenenYansima.First();
+                Predicate<Yansima> predicate = arananYansima => arananYansima.Id == deyisID;
+                return heapADT.Ara(predicate);
             }
             catch (Exception)
             {
@@ -76,6 +75,7 @@ namespace Project.BusinessLayer.Classes
             try
             {
                 unitOfWork.Yansimalar.Remove(entity);
+                heapADT.Sil(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -87,7 +87,7 @@ namespace Project.BusinessLayer.Classes
 
         public override List<Yansima> TumElemanList()
         {
-            return unitOfWork.Ozdeyisler.GetAll().ToList();
+            return heapADT.TumElemanList();
         }
     }
 }
