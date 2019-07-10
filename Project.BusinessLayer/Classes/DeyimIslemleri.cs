@@ -20,32 +20,74 @@ namespace Project.BusinessLayer.Classes
 
         public override Deyim CumleAra(string deyisCumle)
         {
-            throw new NotImplementedException();
+            deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
+            deyisCumle = deyisCumle.ToUpper();
+            Expression<Func<Deyim, bool>> predicate = arananDeyim => arananDeyim.DeyisCumle == deyisCumle;
+            IEnumerable<Deyim> istenenDeyim = unitOfWork.Deyimler.Find(predicate);
+            return istenenDeyim.First();
         }
 
         public override bool Ekle(Deyim entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                unitOfWork.Deyimler.Add(entity);
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override bool Guncelle(Deyim entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Deyim eskiDeyim = new Deyim();
+                eskiDeyim = unitOfWork.Deyimler.Get(entity.Id);
+                eskiDeyim = entity;
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override Deyim IDAra(int deyisID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Expression<Func<Deyim, bool>> predicate = arananDeyim => arananDeyim.Id == deyisID;
+                IEnumerable<Deyim> istenenDeyim = unitOfWork.Deyimler.Find(predicate);
+                return istenenDeyim.First();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public override bool Sil(Deyim entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                unitOfWork.Deyimler.Remove(entity);
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override List<Deyim> TumElemanList()
         {
-            throw new NotImplementedException();
+            return unitOfWork.Deyimler.GetAll().ToList();
         }
     }
 }
