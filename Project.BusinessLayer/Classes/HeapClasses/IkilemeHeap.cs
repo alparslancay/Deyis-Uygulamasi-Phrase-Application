@@ -34,6 +34,7 @@ namespace Project.BusinessLayer.Classes.HeapClasses
             Ikileme newIkileme = new Ikileme();
             newIkileme = Ara(predicate);
             newIkileme = entity;
+            
         }
 
         public override void Sil(Ikileme entity)
