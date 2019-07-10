@@ -20,32 +20,74 @@ namespace Project.BusinessLayer.Classes
 
         public override Yansima CumleAra(string deyisCumle)
         {
-            throw new NotImplementedException();
+            deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
+            deyisCumle = deyisCumle.ToUpper();
+            Expression<Func<Ozdeyis, bool>> predicate = arananYansima => arananYansima.DeyisCumle == deyisCumle;
+            IEnumerable<Yansima> istenenYansima = unitOfWork.Yansimalar.Find(predicate);
+            return istenenYansima.First();
         }
 
         public override bool Ekle(Yansima entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                unitOfWork.Yansimalar.Add(entity);
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override bool Guncelle(Yansima entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Yansima eskiYansima = new Yansima();
+                eskiYansima = unitOfWork.Yansimalar.Get(entity.Id);
+                eskiYansima = entity;
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override Yansima IDAra(int deyisID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Expression<Func<Yansima, bool>> predicate = arananYansima => arananYansima.Id == deyisID;
+                IEnumerable<Yansima> istenenYansima = unitOfWork.Yansimalar.Find(predicate);
+                return istenenYansima.First();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public override bool Sil(Yansima entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                unitOfWork.Yansimalar.Remove(entity);
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override List<Yansima> TumElemanList()
         {
-            throw new NotImplementedException();
+            return unitOfWork.Ozdeyisler.GetAll().ToList();
         }
     }
 }
