@@ -20,32 +20,74 @@ namespace Project.BusinessLayer.Classes
 
         public override Ikileme CumleAra(string deyisCumle)
         {
-            throw new NotImplementedException();
+            deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
+            deyisCumle = deyisCumle.ToUpper();
+            Expression<Func<Ikileme, bool>> predicate = arananIkileme => arananIkileme.DeyisCumle == deyisCumle;
+            IEnumerable<Ikileme> istenenIkileme = unitOfWork.Ikilemeler.Find(predicate);
+            return istenenIkileme.First();
         }
 
         public override bool Ekle(Ikileme entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                unitOfWork.Ikilemeler.Add(entity);
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override bool Guncelle(Ikileme entity)
         {
-            throw new NotImplementedException();
+             try
+            {
+                Ikileme eskiIkileme = new Ikileme();
+                eskiIkileme = unitOfWork.Ikilemeler.Get(entity.Id);
+                eskiIkileme = entity;
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override Ikileme IDAra(int deyisID)
         {
-            throw new NotImplementedException();
+           try
+            {
+                Expression<Func<Ikileme, bool>> predicate = arananIkileme => arananIkileme.Id == deyisID;
+                IEnumerable<Ikileme> istenenIkileme = unitOfWork.Ikilemeler.Find(predicate);
+                return istenenIkileme.First();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public override bool Sil(Ikileme entity)
         {
-            throw new NotImplementedException();
+              try
+            {
+                unitOfWork.Ikilemeler.Remove(entity);
+                unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override List<Ikileme> TumElemanList()
         {
-            throw new NotImplementedException();
+             return unitOfWork.Ikilemeler.GetAll().ToList();
         }
     }
 }
