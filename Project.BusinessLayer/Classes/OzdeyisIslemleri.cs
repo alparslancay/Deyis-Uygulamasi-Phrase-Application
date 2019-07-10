@@ -17,16 +17,15 @@ namespace Project.BusinessLayer.Classes
         public OzdeyisIslemleri()
         {
             unitOfWork = new UnitOfWork(new ProjectDbContext("DeyisDB"));
-            heapADT = new OzdeyisHeap();
+            heapADT = new OzdeyisHeap(unitOfWork.Ozdeyisler.GetAll().ToList());
         }
 
         public override Ozdeyis CumleAra(string deyisCumle)
         {
             deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
             deyisCumle = deyisCumle.ToUpper();
-            Expression<Func<Ozdeyis, bool>> predicate = arananOzdeyis => arananOzdeyis.DeyisCumle == deyisCumle;
-            IEnumerable<Ozdeyis> istenenOzdeyis = unitOfWork.Ozdeyisler.Find(predicate);
-            return istenenOzdeyis.First();
+            Predicate<Ozdeyis> predicate = arananOzdeyis => arananOzdeyis.DeyisCumle == deyisCumle;
+            return heapADT.Ara(predicate);
         }
 
         public override bool Ekle(Ozdeyis entity)
@@ -34,6 +33,7 @@ namespace Project.BusinessLayer.Classes
             try
             {
                 unitOfWork.Ozdeyisler.Add(entity);
+                heapADT.Ekle(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -50,6 +50,7 @@ namespace Project.BusinessLayer.Classes
                 Ozdeyis eskiOzdeyis = new Ozdeyis();
                 eskiOzdeyis = unitOfWork.Ozdeyisler.Get(entity.Id);
                 eskiOzdeyis = entity;
+                heapADT.Guncelle(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -63,9 +64,8 @@ namespace Project.BusinessLayer.Classes
         {
             try
             {
-                Expression<Func<Ozdeyis, bool>> predicate = arananOzdeyis => arananOzdeyis.Id == deyisID;
-                IEnumerable<Ozdeyis> istenenOzdeyis = unitOfWork.Ozdeyisler.Find(predicate);
-                return istenenOzdeyis.First();
+                Predicate<Ozdeyis> predicate = arananOzdeyis => arananOzdeyis.Id == deyisID;
+                return heapADT.Ara(predicate);
             }
             catch (Exception)
             {
@@ -78,6 +78,7 @@ namespace Project.BusinessLayer.Classes
             try
             {
                 unitOfWork.Ozdeyisler.Remove(entity);
+                heapADT.Sil(entity);
                 unitOfWork.Complete();
                 return true;
             }
@@ -89,7 +90,7 @@ namespace Project.BusinessLayer.Classes
 
         public override List<Ozdeyis> TumElemanList()
         {
-            return unitOfWork.Ozdeyisler.GetAll().ToList();
+            return heapADT.TumElemanList();
         }
     }
 }
