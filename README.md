@@ -36,7 +36,7 @@ Bu paketleri indirmek için Visual Studio'daki **Paket Yöneticisi Konsolu**na a
 * Entity Framework için:
 
 ```sh
-Install-Package MetroFramework
+Install-Package EntityFramework
 ```
 
 * Metro Framework için:
