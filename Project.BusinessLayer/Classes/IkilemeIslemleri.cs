@@ -4,6 +4,7 @@ using Project.DataAccessLayer.Classes;
 using Project.EntityLayer;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,6 @@ namespace Project.BusinessLayer.Classes
         public override Ikileme CumleAra(string deyisCumle)
         {
             deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
-            deyisCumle = deyisCumle.ToUpper();
             Predicate<Ikileme> predicate = arananIkileme => arananIkileme.DeyisCumle == deyisCumle;
             return heapADT.Ara(predicate);
         }
@@ -30,6 +30,7 @@ namespace Project.BusinessLayer.Classes
         {
             try
             {
+                entity.DeyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(entity.DeyisCumle);
                 unitOfWork.Ikilemeler.Add(entity);
                 heapADT.Ekle(entity);
                 unitOfWork.Complete();

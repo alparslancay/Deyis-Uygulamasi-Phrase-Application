@@ -23,7 +23,6 @@ namespace Project.BusinessLayer.Classes
         public override Ozdeyis CumleAra(string deyisCumle)
         {
             deyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(deyisCumle);
-            deyisCumle = deyisCumle.ToUpper();
             Predicate<Ozdeyis> predicate = arananOzdeyis => arananOzdeyis.DeyisCumle == deyisCumle;
             return heapADT.Ara(predicate);
         }
@@ -32,6 +31,7 @@ namespace Project.BusinessLayer.Classes
         {
             try
             {
+                entity.DeyisCumle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(entity.DeyisCumle);
                 unitOfWork.Ozdeyisler.Add(entity);
                 heapADT.Ekle(entity);
                 unitOfWork.Complete();
