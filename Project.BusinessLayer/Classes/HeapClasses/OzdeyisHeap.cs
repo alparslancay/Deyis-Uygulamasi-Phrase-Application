@@ -13,10 +13,15 @@ namespace Project.BusinessLayer.Classes.HeapClasses
     {
        private int currentSize;
 
-        public OzdeyisHeap(List<Ozdeyis> OzdeyisHeapArray)
+        public OzdeyisHeap(List<Ozdeyis> ozdeyisList)
         {
             currentSize = 0;
-            agacDugumleri = OzdeyisHeapArray;
+            agacDugumleri = new List<Ozdeyis>();
+
+            foreach (var simdikiDeyis in ozdeyisList)
+            {
+                Ekle(simdikiDeyis);
+            }
         }
         public override Ozdeyis Ara(Predicate<Ozdeyis> predicate)
         {

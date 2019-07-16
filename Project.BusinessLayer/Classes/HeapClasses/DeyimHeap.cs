@@ -12,10 +12,15 @@ namespace Project.BusinessLayer.Classes.HeapClasses
     public class DeyimHeap : HeapADT<Deyim>
     {
         private int currentSize;
-        public DeyimHeap(List<Deyim> DeyimHeapArray)
+        public DeyimHeap(List<Deyim> deyimList)
         {
             currentSize = 0;
-            agacDugumleri = DeyimHeapArray;
+            agacDugumleri = new List<Deyim>();
+
+            foreach (var simdikiDeyis in deyimList)
+            {
+                Ekle(simdikiDeyis);
+            }
         }
         public override Deyim Ara(Predicate<Deyim> predicate)
         {
@@ -24,7 +29,7 @@ namespace Project.BusinessLayer.Classes.HeapClasses
 
         public override void Ekle(Deyim entity)
         {
-            agacDugumleri[currentSize] = entity;
+            agacDugumleri.Add(entity);
             MoveToUpDeyim(currentSize++);
         }
 
@@ -70,7 +75,7 @@ namespace Project.BusinessLayer.Classes.HeapClasses
         {
             int parent = (index - 1) / 2;
             Deyim bottom = agacDugumleri[index];
-            while (string.Compare(agacDugumleri[parent].DeyisCumle.ToString(), bottom.DeyisCumle.ToString()) == -1)
+            while (index > 0 && string.Compare(agacDugumleri[parent].DeyisCumle.ToString(), bottom.DeyisCumle.ToString()) == -1)
             {
                 agacDugumleri[index] = agacDugumleri[parent];
                 index = parent;
@@ -87,11 +92,11 @@ namespace Project.BusinessLayer.Classes.HeapClasses
                 int leftChild = 2 * index + 1;
                 int rightChild = leftChild + 1;
 
-                if (rightChild < currentSize && string.Compare(agacDugumleri[leftChild].DeyisCumle, agacDugumleri[rightChild].DeyisCumle) == -1)
+                if (rightChild < currentSize && string.Compare(agacDugumleri[leftChild].DeyisCumle, agacDugumleri[rightChild].DeyisCumle) == 1)
                     largerChild = rightChild;
                 else
                     largerChild = leftChild;
-                if (string.Compare(top.DeyisCumle, agacDugumleri[largerChild].DeyisCumle) == 1)
+                if (string.Compare(top.DeyisCumle, agacDugumleri[largerChild].DeyisCumle) == -1)
                     break;
                 agacDugumleri[index] = agacDugumleri[largerChild];
                 index = largerChild;
